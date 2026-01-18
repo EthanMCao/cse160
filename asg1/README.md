@@ -23,8 +23,8 @@ A WebGL-based paint program that allows users to draw shapes interactively on an
 
 ### Custom Picture
 - ✅ "Draw My Picture" button displays a custom design
-- ✅ Features initials "ET" prominently in the design
-- ✅ Uses 29+ triangles with multiple colors
+- ✅ Features initials "EB" prominently in the design (you should update to your own initials)
+- ✅ Uses 30+ triangles with multiple colors
 - ✅ Includes decorative elements around the letters
 
 ### Awesome Features (Extra Credit)
@@ -40,8 +40,8 @@ A WebGL-based paint program that allows users to draw shapes interactively on an
    
 3. **Eraser Tool** 🧽
    - Dedicated eraser mode button
-   - Draws black circles to cover/erase existing content
-   - Automatically uses a larger size for better erasing
+   - Actually removes shapes from the canvas within the eraser radius
+   - Size slider controls eraser radius
 
 ## How to Run
 
@@ -108,7 +108,7 @@ Ethan - CSE 160 Assignment 1
 
 2. **Alpha Transparency** - Use the "Transparency" slider to paint with semi-transparent colors. This creates beautiful layering effects and makes the paint program feel more realistic.
 
-3. **Eraser Tool** - Click the "Eraser" button to switch to eraser mode. This allows you to correct mistakes by painting over them with the background color.
+3. **Eraser Tool** - Click the "Eraser" button to switch to eraser mode. This actually removes shapes from the canvas within the eraser radius, allowing you to correct mistakes.
 
-The custom picture features the initials "ET" created with colored triangles, along with decorative triangle elements around the letters.
+The custom picture features the initials "EB" created with colored triangles, along with decorative triangle elements around the letters. (Note: Update these to your own initials before submission)
 
