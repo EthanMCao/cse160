@@ -1,4 +1,4 @@
-// Point.js - Point shape class
+// Point.js - Point class for rendering points
 
 class Point {
   constructor() {
@@ -9,21 +9,20 @@ class Point {
   }
   
   render() {
-    var xy = this.position;
-    var rgba = this.color;
-    var size = this.size;
+    let xy = this.position;
+    let rgba = this.color;
+    let size = this.size;
     
-    // Pass the position to a_Position attribute
+    // Pass the position to the vertex shader
     gl.vertexAttrib3f(a_Position, xy[0], xy[1], 0.0);
     
-    // Pass the color to u_FragColor uniform
+    // Pass the color to the fragment shader
     gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
     
-    // Pass the size to u_Size uniform
+    // Pass the size to the vertex shader
     gl.uniform1f(u_Size, size);
     
     // Draw the point
     gl.drawArrays(gl.POINTS, 0, 1);
   }
 }
-

@@ -1,63 +1,65 @@
-// asg1.js - WebGL Paint Program
+// asg1.js - WebGL Paint Application
 // Vertex shader program
 var VSHADER_SOURCE =
-  `attribute vec4 a_Position;
-   uniform float u_Size;
-   void main() {
-     gl_Position = a_Position;
-     gl_PointSize = u_Size;
-   }`;
+  'attribute vec4 a_Position;\n' +
+  'uniform float u_Size;\n' +
+  'void main() {\n' +
+  '  gl_Position = a_Position;\n' +
+  '  gl_PointSize = u_Size;\n' +
+  '}\n';
 
 // Fragment shader program
 var FSHADER_SOURCE =
-  `precision mediump float;
-   uniform vec4 u_FragColor;
-   void main() {
-     gl_FragColor = u_FragColor;
-   }`;
+  'precision mediump float;\n' +
+  'uniform vec4 u_FragColor;\n' +
+  'void main() {\n' +
+  '  gl_FragColor = u_FragColor;\n' +
+  '}\n';
 
-// Global Variables
+// Global variables
 let canvas;
 let gl;
 let a_Position;
 let u_FragColor;
 let u_Size;
 
-// Shape storage
+// Current settings
+let currentColor = [1.0, 0.0, 0.0, 1.0]; // RGBA
+let currentSize = 10.0;
+let currentDrawMode = 'point'; // 'point', 'triangle', 'circle'
+let currentSegments = 10;
+
+// Shape list
 let shapesList = [];
 
-// Current drawing settings
-let currentColor = [1.0, 0.0, 0.0, 1.0]; // Red
-let currentSize = 10;
-let currentSegments = 10;
-let currentDrawMode = 'point'; // 'point', 'triangle', 'circle', 'eraser'
-let currentAlpha = 1.0;
-let smoothStrokeEnabled = true;
-let lastMousePos = null;
-
 function main() {
+  // Setup WebGL
   setupWebGL();
+  
+  // Connect variables to GLSL
   connectVariablesToGLSL();
-  addActionsForHTMLUI();
   
   // Register mouse event handlers
-  canvas.onmousedown = handleMouseDown;
-  canvas.onmousemove = handleMouseMove;
-  canvas.onmouseup = handleMouseUp;
+  canvas.onmousedown = handleClick;
+  canvas.onmousemove = handleClick;
+  
+  // Specify the color for clearing canvas
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);
   
   // Clear canvas
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT);
-  
-  console.log('WebGL Paint Program initialized');
 }
 
 function setupWebGL() {
-  // Retrieve <canvas> element
+  // Retrieve canvas element
   canvas = document.getElementById('webgl');
+  if (!canvas) {
+    console.log('Failed to retrieve the <canvas> element');
+    return;
+  }
   
   // Get the rendering context for WebGL
-  gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+  gl = getWebGLContext(canvas);
   if (!gl) {
     console.log('Failed to get the rendering context for WebGL');
     return;
@@ -93,123 +95,64 @@ function connectVariablesToGLSL() {
   }
 }
 
-function addActionsForHTMLUI() {
-  // Color sliders are already connected via oninput in HTML
-  // Initial display update
-  updateColor();
-  updateSize();
-  updateSegments();
-  updateAlpha();
-  updateSmoothStroke();
+function handleClick(ev) {
+  // Only draw on mouse down or when dragging with button pressed
+  if (ev.type === 'mousemove' && ev.buttons !== 1) {
+    return;
+  }
   
-  // Enable blending for transparency
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-}
-
-// Convert canvas coordinates to WebGL coordinates
-function convertCoordinatesEventToGL(ev) {
-  var x = ev.clientX; // x coordinate of mouse pointer
-  var y = ev.clientY; // y coordinate of mouse pointer
-  var rect = ev.target.getBoundingClientRect();
+  // Convert mouse coordinates to WebGL coordinates
+  let [x, y] = convertCoordinates(ev);
   
-  x = ((x - rect.left) - canvas.width/2)/(canvas.width/2);
-  y = (canvas.height/2 - (y - rect.top))/(canvas.height/2);
+  // Create the appropriate shape based on current mode
+  let shape;
+  if (currentDrawMode === 'point') {
+    shape = new Point();
+    shape.position = [x, y];
+    shape.color = currentColor.slice();
+    shape.size = currentSize;
+  } else if (currentDrawMode === 'triangle') {
+    shape = new Triangle();
+    shape.position = [x, y];
+    shape.color = currentColor.slice();
+    shape.size = currentSize;
+  } else if (currentDrawMode === 'circle') {
+    shape = new Circle();
+    shape.position = [x, y];
+    shape.color = currentColor.slice();
+    shape.size = currentSize;
+    shape.segments = currentSegments;
+  }
   
-  return [x, y];
-}
-
-// Mouse event handlers
-let isMouseDown = false;
-
-function handleMouseDown(ev) {
-  isMouseDown = true;
-  let [x, y] = convertCoordinatesEventToGL(ev);
-  lastMousePos = [x, y];
+  // Add shape to list
+  shapesList.push(shape);
   
-  // Create and add shape
-  addShapeAtPosition(x, y);
+  // Render all shapes
   renderAllShapes();
 }
 
-function handleMouseMove(ev) {
-  if (isMouseDown) {
-    let [x, y] = convertCoordinatesEventToGL(ev);
-    
-    // Smooth stroke: interpolate between last position and current position
-    if (smoothStrokeEnabled && lastMousePos) {
-      let numSteps = Math.floor(distance(lastMousePos[0], lastMousePos[1], x, y) * 50);
-      for (let i = 0; i < numSteps; i++) {
-        let t = i / numSteps;
-        let ix = lastMousePos[0] + (x - lastMousePos[0]) * t;
-        let iy = lastMousePos[1] + (y - lastMousePos[1]) * t;
-        addShapeAtPosition(ix, iy);
-      }
-    }
-    
-    // Add shape at current position
-    addShapeAtPosition(x, y);
-    lastMousePos = [x, y];
-    
-    renderAllShapes();
-  }
-}
-
-// Helper function to calculate distance between two points
-function distance(x1, y1, x2, y2) {
-  return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-}
-
-// Helper function to add a shape at a specific position
-function addShapeAtPosition(x, y) {
-  if (currentDrawMode === 'eraser') {
-    // Eraser mode: add a black shape to cover existing content
-    if (currentDrawMode === 'eraser') {
-      let eraser = new Circle();
-      eraser.position = [x, y];
-      eraser.color = [0.0, 0.0, 0.0, 1.0]; // Black
-      eraser.size = currentSize * 1.5; // Make eraser bigger
-      eraser.segments = 20;
-      shapesList.push(eraser);
-    }
-  } else if (currentDrawMode === 'point') {
-    let point = new Point();
-    point.position = [x, y];
-    point.color = currentColor.slice();
-    point.size = currentSize;
-    shapesList.push(point);
-  } else if (currentDrawMode === 'triangle') {
-    let triangle = new Triangle();
-    triangle.position = [x, y];
-    triangle.color = currentColor.slice();
-    triangle.size = currentSize;
-    shapesList.push(triangle);
-  } else if (currentDrawMode === 'circle') {
-    let circle = new Circle();
-    circle.position = [x, y];
-    circle.color = currentColor.slice();
-    circle.size = currentSize;
-    circle.segments = currentSegments;
-    shapesList.push(circle);
-  }
-}
-
-function handleMouseUp(ev) {
-  isMouseDown = false;
-  lastMousePos = null;
+function convertCoordinates(ev) {
+  let x = ev.clientX; // x coordinate of mouse pointer
+  let y = ev.clientY; // y coordinate of mouse pointer
+  let rect = ev.target.getBoundingClientRect();
+  
+  x = ((x - rect.left) - canvas.width/2) / (canvas.width/2);
+  y = (canvas.height/2 - (y - rect.top)) / (canvas.height/2);
+  
+  return [x, y];
 }
 
 function renderAllShapes() {
   // Clear canvas
   gl.clear(gl.COLOR_BUFFER_BIT);
   
-  // Render all shapes
-  for (let i = 0; i < shapesList.length; i++) {
-    shapesList[i].render();
+  // Render each shape
+  for (let shape of shapesList) {
+    shape.render();
   }
 }
 
-// UI Control Functions
+// UI event handlers
 function setDrawMode(mode) {
   currentDrawMode = mode;
   
@@ -217,7 +160,6 @@ function setDrawMode(mode) {
   document.getElementById('pointBtn').classList.remove('active');
   document.getElementById('triangleBtn').classList.remove('active');
   document.getElementById('circleBtn').classList.remove('active');
-  document.getElementById('eraserBtn').classList.remove('active');
   
   if (mode === 'point') {
     document.getElementById('pointBtn').classList.add('active');
@@ -225,8 +167,6 @@ function setDrawMode(mode) {
     document.getElementById('triangleBtn').classList.add('active');
   } else if (mode === 'circle') {
     document.getElementById('circleBtn').classList.add('active');
-  } else if (mode === 'eraser') {
-    document.getElementById('eraserBtn').classList.add('active');
   }
 }
 
@@ -235,7 +175,7 @@ function updateColor() {
   let g = document.getElementById('greenSlider').value / 100;
   let b = document.getElementById('blueSlider').value / 100;
   
-  currentColor = [r, g, b, currentAlpha];
+  currentColor = [r, g, b, 1.0];
   
   // Update display values
   document.getElementById('redValue').textContent = document.getElementById('redSlider').value;
@@ -253,118 +193,12 @@ function updateSegments() {
   document.getElementById('segmentsValue').textContent = currentSegments;
 }
 
-function updateAlpha() {
-  currentAlpha = parseFloat(document.getElementById('alphaSlider').value) / 100;
-  document.getElementById('alphaValue').textContent = document.getElementById('alphaSlider').value;
-  // Update current color with new alpha
-  currentColor[3] = currentAlpha;
-}
-
-function updateSmoothStroke() {
-  smoothStrokeEnabled = document.getElementById('smoothStroke').checked;
-}
-
 function clearCanvas() {
   shapesList = [];
   renderAllShapes();
 }
 
 function drawPicture() {
-  // ===================================================================
-  // IMPORTANT: Personalize this section with YOUR OWN INITIALS!
-  // This example uses "ET" - change the coordinates and design to match
-  // your own initials and creative vision.
-  // You need at least 20 triangles for full credit.
-  // ===================================================================
-  
-  // Custom picture: Letter "E" and "T" with decorative triangles
-  // This creates a stylized design featuring the initials "ET"
-  
-  // Letter E (using triangles)
-  // Vertical bar of E
-  drawCustomTriangle(-0.6, 0.5, -0.6, 0.3, -0.5, 0.4, [0.2, 0.6, 1.0, 1.0]); // Blue
-  drawCustomTriangle(-0.6, 0.3, -0.6, 0.1, -0.5, 0.2, [0.2, 0.6, 1.0, 1.0]);
-  drawCustomTriangle(-0.6, 0.1, -0.6, -0.1, -0.5, 0.0, [0.2, 0.6, 1.0, 1.0]);
-  drawCustomTriangle(-0.6, -0.1, -0.6, -0.3, -0.5, -0.2, [0.2, 0.6, 1.0, 1.0]);
-  drawCustomTriangle(-0.6, -0.3, -0.6, -0.5, -0.5, -0.4, [0.2, 0.6, 1.0, 1.0]);
-  
-  // Top horizontal bar of E
-  drawCustomTriangle(-0.5, 0.5, -0.3, 0.5, -0.4, 0.4, [0.3, 0.7, 1.0, 1.0]);
-  drawCustomTriangle(-0.3, 0.5, -0.1, 0.5, -0.2, 0.4, [0.3, 0.7, 1.0, 1.0]);
-  
-  // Middle horizontal bar of E
-  drawCustomTriangle(-0.5, 0.0, -0.3, 0.0, -0.4, -0.1, [0.3, 0.7, 1.0, 1.0]);
-  drawCustomTriangle(-0.3, 0.0, -0.15, 0.0, -0.25, -0.1, [0.3, 0.7, 1.0, 1.0]);
-  
-  // Bottom horizontal bar of E
-  drawCustomTriangle(-0.5, -0.5, -0.3, -0.5, -0.4, -0.4, [0.3, 0.7, 1.0, 1.0]);
-  drawCustomTriangle(-0.3, -0.5, -0.1, -0.5, -0.2, -0.4, [0.3, 0.7, 1.0, 1.0]);
-  
-  // Letter T (using triangles)
-  // Top horizontal bar of T
-  drawCustomTriangle(0.0, 0.5, 0.2, 0.5, 0.1, 0.4, [1.0, 0.4, 0.6, 1.0]); // Pink
-  drawCustomTriangle(0.2, 0.5, 0.4, 0.5, 0.3, 0.4, [1.0, 0.4, 0.6, 1.0]);
-  drawCustomTriangle(0.4, 0.5, 0.6, 0.5, 0.5, 0.4, [1.0, 0.4, 0.6, 1.0]);
-  
-  // Vertical bar of T
-  drawCustomTriangle(0.3, 0.4, 0.3, 0.2, 0.2, 0.3, [1.0, 0.5, 0.7, 1.0]);
-  drawCustomTriangle(0.3, 0.2, 0.3, 0.0, 0.2, 0.1, [1.0, 0.5, 0.7, 1.0]);
-  drawCustomTriangle(0.3, 0.0, 0.3, -0.2, 0.2, -0.1, [1.0, 0.5, 0.7, 1.0]);
-  drawCustomTriangle(0.3, -0.2, 0.3, -0.4, 0.2, -0.3, [1.0, 0.5, 0.7, 1.0]);
-  drawCustomTriangle(0.3, -0.4, 0.3, -0.5, 0.2, -0.45, [1.0, 0.5, 0.7, 1.0]);
-  
-  // Decorative triangles around the letters
-  drawCustomTriangle(-0.8, 0.7, -0.75, 0.6, -0.7, 0.7, [1.0, 1.0, 0.3, 1.0]); // Yellow
-  drawCustomTriangle(-0.8, -0.7, -0.75, -0.6, -0.7, -0.7, [1.0, 1.0, 0.3, 1.0]);
-  drawCustomTriangle(0.7, 0.7, 0.75, 0.6, 0.8, 0.7, [1.0, 1.0, 0.3, 1.0]);
-  drawCustomTriangle(0.7, -0.7, 0.75, -0.6, 0.8, -0.7, [1.0, 1.0, 0.3, 1.0]);
-  
-  // Additional decorative elements
-  drawCustomTriangle(0.0, 0.75, 0.05, 0.65, -0.05, 0.65, [0.5, 1.0, 0.5, 1.0]); // Green
-  drawCustomTriangle(-0.7, 0.0, -0.65, 0.1, -0.65, -0.1, [1.0, 0.7, 0.3, 1.0]); // Orange
-  drawCustomTriangle(0.65, 0.0, 0.7, 0.1, 0.7, -0.1, [1.0, 0.7, 0.3, 1.0]);
-  
-  // Background accent triangles
-  drawCustomTriangle(-0.85, 0.3, -0.8, 0.2, -0.8, 0.4, [0.4, 0.4, 0.8, 1.0]);
-  drawCustomTriangle(0.8, 0.2, 0.85, 0.3, 0.85, 0.1, [0.8, 0.4, 0.4, 1.0]);
-  
-  renderAllShapes();
-  console.log('Picture drawn with initials "ET"');
+  // This will be implemented later with custom triangles
+  console.log('Draw picture - to be implemented');
 }
-
-// Helper function to draw a custom triangle at specific coordinates
-function drawCustomTriangle(x1, y1, x2, y2, x3, y3, color) {
-  let triangle = new Triangle();
-  // We'll create a custom triangle by directly specifying all vertices
-  triangle.position = [x1, y1];
-  triangle.color = color;
-  triangle.size = 0; // We'll override the render to use custom vertices
-  
-  // Store custom vertices
-  triangle.vertices = [x1, y1, x2, y2, x3, y3];
-  
-  // Override render method for this specific triangle
-  triangle.render = function() {
-    var rgba = this.color;
-    
-    // Pass the color to u_FragColor uniform
-    gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
-    
-    var vertices = new Float32Array(this.vertices);
-    
-    var vertexBuffer = gl.createBuffer();
-    if (!vertexBuffer) {
-      console.log('Failed to create the buffer object');
-      return -1;
-    }
-    
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-    gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(a_Position);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-  };
-  
-  shapesList.push(triangle);
-}
-
