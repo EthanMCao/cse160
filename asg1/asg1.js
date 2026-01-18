@@ -26,8 +26,11 @@ let u_Size;
 // Current settings
 let currentColor = [1.0, 0.0, 0.0, 1.0]; // RGBA
 let currentSize = 10.0;
-let currentDrawMode = 'point'; // 'point', 'triangle', 'circle'
+let currentDrawMode = 'point'; // 'point', 'triangle', 'circle', 'eraser'
 let currentSegments = 10;
+let currentAlpha = 1.0;
+let smoothStroke = true;
+let lastMousePos = null;
 
 // Shape list
 let shapesList = [];
@@ -58,12 +61,16 @@ function setupWebGL() {
     return;
   }
   
-  // Get the rendering context for WebGL
-  gl = getWebGLContext(canvas);
+  // Get the rendering context for WebGL with preserveDrawingBuffer for better performance
+  gl = getWebGLContext(canvas, { preserveDrawingBuffer: true });
   if (!gl) {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
+  
+  // Enable alpha blending for transparency
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 }
 
 function connectVariablesToGLSL() {
@@ -98,37 +105,80 @@ function connectVariablesToGLSL() {
 function handleClick(ev) {
   // Only draw on mouse down or when dragging with button pressed
   if (ev.type === 'mousemove' && ev.buttons !== 1) {
+    lastMousePos = null;
     return;
   }
   
   // Convert mouse coordinates to WebGL coordinates
   let [x, y] = convertCoordinates(ev);
   
+  // Smooth stroke interpolation - fill gaps between points
+  if (smoothStroke && lastMousePos && ev.type === 'mousemove') {
+    let dx = x - lastMousePos[0];
+    let dy = y - lastMousePos[1];
+    let distance = Math.sqrt(dx * dx + dy * dy);
+    let steps = Math.max(Math.floor(distance * 100), 1); // Interpolate based on distance
+    
+    for (let i = 0; i <= steps; i++) {
+      let t = i / steps;
+      let interpX = lastMousePos[0] + dx * t;
+      let interpY = lastMousePos[1] + dy * t;
+      createAndAddShape(interpX, interpY);
+    }
+  } else {
+    createAndAddShape(x, y);
+  }
+  
+  lastMousePos = [x, y];
+  
+  // Render all shapes
+  renderAllShapes();
+}
+
+function createAndAddShape(x, y) {
+  // Handle eraser mode
+  if (currentDrawMode === 'eraser') {
+    // Find and remove shapes near the eraser position
+    let eraserRadius = currentSize / 200.0;
+    shapesList = shapesList.filter(shape => {
+      if (shape.position) {
+        let dx = shape.position[0] - x;
+        let dy = shape.position[1] - y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        return distance > eraserRadius;
+      }
+      return true; // Keep custom triangles (from picture)
+    });
+    return;
+  }
+  
+  // Update color with current alpha
+  let colorWithAlpha = [currentColor[0], currentColor[1], currentColor[2], currentAlpha];
+  
   // Create the appropriate shape based on current mode
   let shape;
   if (currentDrawMode === 'point') {
     shape = new Point();
     shape.position = [x, y];
-    shape.color = currentColor.slice();
+    shape.color = colorWithAlpha.slice();
     shape.size = currentSize;
   } else if (currentDrawMode === 'triangle') {
     shape = new Triangle();
     shape.position = [x, y];
-    shape.color = currentColor.slice();
+    shape.color = colorWithAlpha.slice();
     shape.size = currentSize;
   } else if (currentDrawMode === 'circle') {
     shape = new Circle();
     shape.position = [x, y];
-    shape.color = currentColor.slice();
+    shape.color = colorWithAlpha.slice();
     shape.size = currentSize;
     shape.segments = currentSegments;
   }
   
   // Add shape to list
-  shapesList.push(shape);
-  
-  // Render all shapes
-  renderAllShapes();
+  if (shape) {
+    shapesList.push(shape);
+  }
 }
 
 function convertCoordinates(ev) {
@@ -160,6 +210,9 @@ function setDrawMode(mode) {
   document.getElementById('pointBtn').classList.remove('active');
   document.getElementById('triangleBtn').classList.remove('active');
   document.getElementById('circleBtn').classList.remove('active');
+  if (document.getElementById('eraserBtn')) {
+    document.getElementById('eraserBtn').classList.remove('active');
+  }
   
   if (mode === 'point') {
     document.getElementById('pointBtn').classList.add('active');
@@ -167,6 +220,10 @@ function setDrawMode(mode) {
     document.getElementById('triangleBtn').classList.add('active');
   } else if (mode === 'circle') {
     document.getElementById('circleBtn').classList.add('active');
+  } else if (mode === 'eraser') {
+    if (document.getElementById('eraserBtn')) {
+      document.getElementById('eraserBtn').classList.add('active');
+    }
   }
 }
 
@@ -191,6 +248,15 @@ function updateSize() {
 function updateSegments() {
   currentSegments = parseInt(document.getElementById('segmentsSlider').value);
   document.getElementById('segmentsValue').textContent = currentSegments;
+}
+
+function updateAlpha() {
+  currentAlpha = parseFloat(document.getElementById('alphaSlider').value) / 100;
+  document.getElementById('alphaValue').textContent = document.getElementById('alphaSlider').value;
+}
+
+function updateSmoothStroke() {
+  smoothStroke = document.getElementById('smoothStroke').checked;
 }
 
 function clearCanvas() {
