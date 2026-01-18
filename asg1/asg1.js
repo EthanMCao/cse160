@@ -30,7 +30,10 @@ let shapesList = [];
 let currentColor = [1.0, 0.0, 0.0, 1.0]; // Red
 let currentSize = 10;
 let currentSegments = 10;
-let currentDrawMode = 'point'; // 'point', 'triangle', 'circle'
+let currentDrawMode = 'point'; // 'point', 'triangle', 'circle', 'eraser'
+let currentAlpha = 1.0;
+let smoothStrokeEnabled = true;
+let lastMousePos = null;
 
 function main() {
   setupWebGL();
@@ -96,6 +99,12 @@ function addActionsForHTMLUI() {
   updateColor();
   updateSize();
   updateSegments();
+  updateAlpha();
+  updateSmoothStroke();
+  
+  // Enable blending for transparency
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 }
 
 // Convert canvas coordinates to WebGL coordinates
@@ -116,9 +125,54 @@ let isMouseDown = false;
 function handleMouseDown(ev) {
   isMouseDown = true;
   let [x, y] = convertCoordinatesEventToGL(ev);
+  lastMousePos = [x, y];
   
   // Create and add shape
-  if (currentDrawMode === 'point') {
+  addShapeAtPosition(x, y);
+  renderAllShapes();
+}
+
+function handleMouseMove(ev) {
+  if (isMouseDown) {
+    let [x, y] = convertCoordinatesEventToGL(ev);
+    
+    // Smooth stroke: interpolate between last position and current position
+    if (smoothStrokeEnabled && lastMousePos) {
+      let numSteps = Math.floor(distance(lastMousePos[0], lastMousePos[1], x, y) * 50);
+      for (let i = 0; i < numSteps; i++) {
+        let t = i / numSteps;
+        let ix = lastMousePos[0] + (x - lastMousePos[0]) * t;
+        let iy = lastMousePos[1] + (y - lastMousePos[1]) * t;
+        addShapeAtPosition(ix, iy);
+      }
+    }
+    
+    // Add shape at current position
+    addShapeAtPosition(x, y);
+    lastMousePos = [x, y];
+    
+    renderAllShapes();
+  }
+}
+
+// Helper function to calculate distance between two points
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+}
+
+// Helper function to add a shape at a specific position
+function addShapeAtPosition(x, y) {
+  if (currentDrawMode === 'eraser') {
+    // Eraser mode: add a black shape to cover existing content
+    if (currentDrawMode === 'eraser') {
+      let eraser = new Circle();
+      eraser.position = [x, y];
+      eraser.color = [0.0, 0.0, 0.0, 1.0]; // Black
+      eraser.size = currentSize * 1.5; // Make eraser bigger
+      eraser.segments = 20;
+      shapesList.push(eraser);
+    }
+  } else if (currentDrawMode === 'point') {
     let point = new Point();
     point.position = [x, y];
     point.color = currentColor.slice();
@@ -138,42 +192,11 @@ function handleMouseDown(ev) {
     circle.segments = currentSegments;
     shapesList.push(circle);
   }
-  
-  renderAllShapes();
-}
-
-function handleMouseMove(ev) {
-  if (isMouseDown) {
-    let [x, y] = convertCoordinatesEventToGL(ev);
-    
-    // Create and add shape
-    if (currentDrawMode === 'point') {
-      let point = new Point();
-      point.position = [x, y];
-      point.color = currentColor.slice();
-      point.size = currentSize;
-      shapesList.push(point);
-    } else if (currentDrawMode === 'triangle') {
-      let triangle = new Triangle();
-      triangle.position = [x, y];
-      triangle.color = currentColor.slice();
-      triangle.size = currentSize;
-      shapesList.push(triangle);
-    } else if (currentDrawMode === 'circle') {
-      let circle = new Circle();
-      circle.position = [x, y];
-      circle.color = currentColor.slice();
-      circle.size = currentSize;
-      circle.segments = currentSegments;
-      shapesList.push(circle);
-    }
-    
-    renderAllShapes();
-  }
 }
 
 function handleMouseUp(ev) {
   isMouseDown = false;
+  lastMousePos = null;
 }
 
 function renderAllShapes() {
@@ -194,6 +217,7 @@ function setDrawMode(mode) {
   document.getElementById('pointBtn').classList.remove('active');
   document.getElementById('triangleBtn').classList.remove('active');
   document.getElementById('circleBtn').classList.remove('active');
+  document.getElementById('eraserBtn').classList.remove('active');
   
   if (mode === 'point') {
     document.getElementById('pointBtn').classList.add('active');
@@ -201,6 +225,8 @@ function setDrawMode(mode) {
     document.getElementById('triangleBtn').classList.add('active');
   } else if (mode === 'circle') {
     document.getElementById('circleBtn').classList.add('active');
+  } else if (mode === 'eraser') {
+    document.getElementById('eraserBtn').classList.add('active');
   }
 }
 
@@ -209,7 +235,7 @@ function updateColor() {
   let g = document.getElementById('greenSlider').value / 100;
   let b = document.getElementById('blueSlider').value / 100;
   
-  currentColor = [r, g, b, 1.0];
+  currentColor = [r, g, b, currentAlpha];
   
   // Update display values
   document.getElementById('redValue').textContent = document.getElementById('redSlider').value;
@@ -225,6 +251,17 @@ function updateSize() {
 function updateSegments() {
   currentSegments = parseInt(document.getElementById('segmentsSlider').value);
   document.getElementById('segmentsValue').textContent = currentSegments;
+}
+
+function updateAlpha() {
+  currentAlpha = parseFloat(document.getElementById('alphaSlider').value) / 100;
+  document.getElementById('alphaValue').textContent = document.getElementById('alphaSlider').value;
+  // Update current color with new alpha
+  currentColor[3] = currentAlpha;
+}
+
+function updateSmoothStroke() {
+  smoothStrokeEnabled = document.getElementById('smoothStroke').checked;
 }
 
 function clearCanvas() {

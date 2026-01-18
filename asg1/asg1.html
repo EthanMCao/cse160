@@ -55,6 +55,7 @@
 
   <body onload="main()">
     <h1>Assignment 1 - WebGL Paint & Shapes</h1>
+    <p><strong>Awesome Features:</strong> ✨ Smooth stroke interpolation (fills gaps during drag), 🎨 Alpha transparency control for painting effects, 🧽 Eraser tool for corrections</p>
     
     <div id="controls">
       <!-- Drawing Mode -->
@@ -63,6 +64,7 @@
         <button id="pointBtn" class="active" onclick="setDrawMode('point')">Points</button>
         <button id="triangleBtn" onclick="setDrawMode('triangle')">Triangles</button>
         <button id="circleBtn" onclick="setDrawMode('circle')">Circles</button>
+        <button id="eraserBtn" onclick="setDrawMode('eraser')">Eraser</button>
       </div>
 
       <!-- Color Controls -->
@@ -94,6 +96,20 @@
         <label>Circle Segments:</label>
         <input type="range" id="segmentsSlider" min="3" max="30" value="10" oninput="updateSegments()">
         <span id="segmentsValue" class="slider-value">10</span>
+      </div>
+
+      <!-- Alpha/Transparency Control -->
+      <div class="control-group">
+        <label>Transparency:</label>
+        <input type="range" id="alphaSlider" min="0" max="100" value="100" oninput="updateAlpha()">
+        <span id="alphaValue" class="slider-value">100</span>
+      </div>
+
+      <!-- Smooth Stroke -->
+      <div class="control-group">
+        <label>Smooth Stroke:</label>
+        <input type="checkbox" id="smoothStroke" checked onchange="updateSmoothStroke()">
+        <span style="font-weight: normal;">(Interpolates between points for smoother lines)</span>
       </div>
 
       <!-- Action Buttons -->
