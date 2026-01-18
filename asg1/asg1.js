@@ -199,6 +199,99 @@ function clearCanvas() {
 }
 
 function drawPicture() {
-  // This will be implemented later with custom triangles
-  console.log('Draw picture - to be implemented');
+  // Clear the canvas first
+  shapesList = [];
+  
+  // Create a custom picture using triangles
+  // Drawing initials "EB" with decorative triangles
+  
+  // Letter E (using triangles)
+  // Vertical bar of E
+  addTriangleToPicture(-0.6, 0.3, -0.5, 0.3, -0.55, 0.4, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.6, 0.2, -0.5, 0.2, -0.55, 0.3, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.6, 0.1, -0.5, 0.1, -0.55, 0.2, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.6, 0.0, -0.5, 0.0, -0.55, 0.1, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.6, -0.1, -0.5, -0.1, -0.55, 0.0, [0.8, 0.2, 0.8]);
+  
+  // Top horizontal of E
+  addTriangleToPicture(-0.5, 0.3, -0.4, 0.3, -0.45, 0.35, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.4, 0.3, -0.3, 0.3, -0.35, 0.35, [0.8, 0.2, 0.8]);
+  
+  // Middle horizontal of E
+  addTriangleToPicture(-0.5, 0.1, -0.4, 0.1, -0.45, 0.15, [0.8, 0.2, 0.8]);
+  
+  // Bottom horizontal of E
+  addTriangleToPicture(-0.5, -0.1, -0.4, -0.1, -0.45, -0.05, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.4, -0.1, -0.3, -0.1, -0.35, -0.05, [0.8, 0.2, 0.8]);
+  
+  // Letter B (using triangles)
+  // Vertical bar of B
+  addTriangleToPicture(-0.1, 0.3, 0.0, 0.3, -0.05, 0.4, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.1, 0.2, 0.0, 0.2, -0.05, 0.3, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.1, 0.1, 0.0, 0.1, -0.05, 0.2, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.1, 0.0, 0.0, 0.0, -0.05, 0.1, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.1, -0.1, 0.0, -0.1, -0.05, 0.0, [0.8, 0.2, 0.8]);
+  
+  // Top curve of B
+  addTriangleToPicture(0.0, 0.3, 0.1, 0.25, 0.05, 0.3, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(0.1, 0.25, 0.1, 0.15, 0.05, 0.2, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(0.1, 0.15, 0.0, 0.1, 0.05, 0.125, [0.8, 0.2, 0.8]);
+  
+  // Bottom curve of B
+  addTriangleToPicture(0.0, 0.1, 0.15, 0.05, 0.075, 0.1, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(0.15, 0.05, 0.15, -0.05, 0.1, 0.0, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(0.15, -0.05, 0.0, -0.1, 0.075, -0.075, [0.8, 0.2, 0.8]);
+  
+  // Decorative blue triangles around the letters
+  addTriangleToPicture(-0.8, 0.5, -0.75, 0.45, -0.7, 0.5, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(-0.5, 0.6, -0.45, 0.5, -0.4, 0.6, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(-0.2, 0.55, -0.15, 0.5, -0.1, 0.55, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(0.2, 0.5, 0.25, 0.45, 0.3, 0.5, [0.3, 0.5, 0.9]);
+  
+  addTriangleToPicture(-0.8, -0.2, -0.75, -0.3, -0.7, -0.2, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(-0.5, -0.3, -0.45, -0.4, -0.4, -0.3, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(-0.2, -0.25, -0.15, -0.35, -0.1, -0.25, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(0.3, -0.2, 0.35, -0.3, 0.4, -0.2, [0.3, 0.5, 0.9]);
+  
+  addTriangleToPicture(0.5, 0.3, 0.55, 0.2, 0.6, 0.3, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(0.6, 0.0, 0.65, -0.1, 0.7, 0.0, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(0.5, -0.4, 0.55, -0.5, 0.6, -0.4, [0.3, 0.5, 0.9]);
+  
+  // Render all shapes
+  renderAllShapes();
+}
+
+function addTriangleToPicture(x1, y1, x2, y2, x3, y3, color) {
+  // Create a custom triangle with specific vertices
+  let triangle = {
+    type: 'custom_triangle',
+    vertices: [x1, y1, x2, y2, x3, y3],
+    color: [color[0], color[1], color[2], 1.0],
+    render: function() {
+      // Pass the color to the fragment shader
+      gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
+      
+      // Create triangle vertices
+      let vertices = new Float32Array(this.vertices);
+      
+      // Create and bind buffer
+      let vertexBuffer = gl.createBuffer();
+      if (!vertexBuffer) {
+        console.log('Failed to create buffer for custom triangle');
+        return;
+      }
+      
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
+      
+      // Assign buffer to a_Position and enable
+      gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(a_Position);
+      
+      // Draw the triangle
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    }
+  };
+  
+  shapesList.push(triangle);
 }
