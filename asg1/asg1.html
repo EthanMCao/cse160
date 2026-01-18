@@ -3,127 +3,31 @@
   <head>
     <meta charset="utf-8" />
     <title>Assignment 1 - WebGL Paint & Shapes</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f0f0f0;
-      }
-      #controls {
-        margin-bottom: 15px;
-        background: white;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
-      canvas {
-        border: 2px solid #333;
-        display: block;
-        background-color: black;
-      }
-      .control-group {
-        margin: 10px 0;
-      }
-      label {
-        display: inline-block;
-        min-width: 150px;
-        font-weight: bold;
-      }
-      button {
-        padding: 8px 15px;
-        margin: 2px;
-        cursor: pointer;
-        border: 2px solid #333;
-        background: white;
-        border-radius: 3px;
-      }
-      button.active {
-        background-color: #4CAF50;
-        color: white;
-      }
-      input[type="range"] {
-        width: 200px;
-        vertical-align: middle;
-      }
-      .slider-value {
-        display: inline-block;
-        min-width: 40px;
-        font-weight: bold;
-      }
-    </style>
   </head>
 
   <body onload="main()">
-    <h1>Assignment 1 - WebGL Paint & Shapes</h1>
-    <!-- TODO: Add your name here -->
-    <p><strong>Created by:</strong> [Your Name Here]</p>
-    <p><strong>Awesome Features:</strong> ✨ Smooth stroke interpolation (fills gaps during drag), 🎨 Alpha transparency control for painting effects, 🧽 Eraser tool for corrections</p>
-    
-    <div id="controls">
-      <!-- Drawing Mode -->
-      <div class="control-group">
-        <label>Drawing Mode:</label>
-        <button id="pointBtn" class="active" onclick="setDrawMode('point')">Points</button>
-        <button id="triangleBtn" onclick="setDrawMode('triangle')">Triangles</button>
-        <button id="circleBtn" onclick="setDrawMode('circle')">Circles</button>
-        <button id="eraserBtn" onclick="setDrawMode('eraser')">Eraser</button>
-      </div>
-
-      <!-- Color Controls -->
-      <div class="control-group">
-        <label>Red:</label>
-        <input type="range" id="redSlider" min="0" max="100" value="100" oninput="updateColor()">
-        <span id="redValue" class="slider-value">100</span>
-      </div>
-      <div class="control-group">
-        <label>Green:</label>
-        <input type="range" id="greenSlider" min="0" max="100" value="0" oninput="updateColor()">
-        <span id="greenValue" class="slider-value">0</span>
-      </div>
-      <div class="control-group">
-        <label>Blue:</label>
-        <input type="range" id="blueSlider" min="0" max="100" value="0" oninput="updateColor()">
-        <span id="blueValue" class="slider-value">0</span>
-      </div>
-
-      <!-- Size Control -->
-      <div class="control-group">
-        <label>Shape Size:</label>
-        <input type="range" id="sizeSlider" min="1" max="50" value="10" oninput="updateSize()">
-        <span id="sizeValue" class="slider-value">10</span>
-      </div>
-
-      <!-- Segments Control (for circles) -->
-      <div class="control-group">
-        <label>Circle Segments:</label>
-        <input type="range" id="segmentsSlider" min="3" max="30" value="10" oninput="updateSegments()">
-        <span id="segmentsValue" class="slider-value">10</span>
-      </div>
-
-      <!-- Alpha/Transparency Control -->
-      <div class="control-group">
-        <label>Transparency:</label>
-        <input type="range" id="alphaSlider" min="0" max="100" value="100" oninput="updateAlpha()">
-        <span id="alphaValue" class="slider-value">100</span>
-      </div>
-
-      <!-- Smooth Stroke -->
-      <div class="control-group">
-        <label>Smooth Stroke:</label>
-        <input type="checkbox" id="smoothStroke" checked onchange="updateSmoothStroke()">
-        <span style="font-weight: normal;">(Interpolates between points for smoother lines)</span>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="control-group">
-        <button onclick="clearCanvas()">Clear Canvas</button>
-        <button onclick="drawPicture()">Draw My Picture</button>
-      </div>
-    </div>
-
     <canvas id="webgl" width="500" height="500">
       Please use a browser that supports "canvas"
     </canvas>
+    <br>
+    <button onclick="clearCanvas()">Clear Canvas</button>
+    <button onclick="drawPicture()">Draw My Picture</button>
+    <br><br>
+
+    <b>Drawing Mode:</b>
+    <button id="pointBtn" onclick="setDrawMode('point')">Points</button>
+    <button id="triangleBtn" onclick="setDrawMode('triangle')">Triangles</button>
+    <button id="circleBtn" onclick="setDrawMode('circle')">Circles</button>
+    <br><br>
+
+    <b>Shape Color:</b><br>
+    Red <input type="range" id="redSlider" min="0" max="100" value="100" oninput="updateColor()">
+    Green <input type="range" id="greenSlider" min="0" max="100" value="0" oninput="updateColor()">
+    Blue <input type="range" id="blueSlider" min="0" max="100" value="0" oninput="updateColor()">
+    <br><br>
+
+    <b>Shape Size:</b> <input type="range" id="sizeSlider" min="1" max="50" value="10" oninput="updateSize()">
+    <b>(Circles) Segment Count:</b> <input type="range" id="segmentsSlider" min="3" max="30" value="10" oninput="updateSegments()">
 
     <script src="lib/webgl-utils.js"></script>
     <script src="lib/webgl-debug.js"></script>
