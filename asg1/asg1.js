@@ -208,48 +208,57 @@ function drawPicture() {
   shapesList = [];
   
   // Create a custom picture using triangles
-  // Drawing initials "EC" with decorative triangles
+  // Drawing initials "EC" with decorative diamonds and trees matching the hand-drawn reference
+  
+  // TOP LEFT DIAMOND (4 triangles)
+  addTriangleToPicture(-0.5, 0.75, -0.35, 0.75, -0.425, 0.85, [0.3, 0.5, 0.9]); // top
+  addTriangleToPicture(-0.35, 0.75, -0.425, 0.65, -0.425, 0.75, [0.3, 0.5, 0.9]); // right
+  addTriangleToPicture(-0.5, 0.75, -0.425, 0.65, -0.425, 0.75, [0.3, 0.5, 0.9]); // left
+  addTriangleToPicture(-0.425, 0.65, -0.35, 0.75, -0.5, 0.75, [0.3, 0.5, 0.9]); // bottom
+  
+  // TOP RIGHT DIAMOND (4 triangles)
+  addTriangleToPicture(0.5, 0.75, 0.65, 0.75, 0.575, 0.85, [0.3, 0.5, 0.9]); // top
+  addTriangleToPicture(0.65, 0.75, 0.575, 0.65, 0.575, 0.75, [0.3, 0.5, 0.9]); // right
+  addTriangleToPicture(0.5, 0.75, 0.575, 0.65, 0.575, 0.75, [0.3, 0.5, 0.9]); // left
+  addTriangleToPicture(0.575, 0.65, 0.65, 0.75, 0.5, 0.75, [0.3, 0.5, 0.9]); // bottom
   
   // Letter E (5 triangles) - Pink/Purple color
-  // E1 - top bar
-  addTriangleToPicture(0.0, 0.8, 0.3, 0.8, 0.15, 0.9, [0.8, 0.2, 0.8]);
-  // E2 - middle bar
-  addTriangleToPicture(0.0, 0.5, 0.25, 0.5, 0.125, 0.6, [0.8, 0.2, 0.8]);
-  // E3 - bottom bar
-  addTriangleToPicture(0.0, 0.2, 0.3, 0.2, 0.15, 0.3, [0.8, 0.2, 0.8]);
-  // E4 - vertical spine (upper)
-  addTriangleToPicture(0.0, 0.8, 0.1, 0.8, 0.05, 0.6, [0.8, 0.2, 0.8]);
-  // E5 - vertical spine (lower)
-  addTriangleToPicture(0.0, 0.5, 0.1, 0.5, 0.05, 0.2, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(-0.4, 0.4, -0.1, 0.4, -0.25, 0.5, [0.8, 0.2, 0.8]); // top bar
+  addTriangleToPicture(-0.4, 0.2, -0.15, 0.2, -0.275, 0.3, [0.8, 0.2, 0.8]); // middle bar
+  addTriangleToPicture(-0.4, 0.0, -0.1, 0.0, -0.25, 0.1, [0.8, 0.2, 0.8]); // bottom bar
+  addTriangleToPicture(-0.4, 0.4, -0.3, 0.4, -0.35, 0.2, [0.8, 0.2, 0.8]); // vertical spine (upper)
+  addTriangleToPicture(-0.4, 0.2, -0.3, 0.2, -0.35, 0.0, [0.8, 0.2, 0.8]); // vertical spine (lower)
   
   // Letter C (5 triangles) - Pink/Purple color
-  // C1 - top curve
-  addTriangleToPicture(0.6, 0.8, 0.9, 0.8, 0.75, 0.9, [0.8, 0.2, 0.8]);
-  // C2 - upper left side
-  addTriangleToPicture(0.6, 0.8, 0.7, 0.8, 0.65, 0.6, [0.8, 0.2, 0.8]);
-  // C3 - lower left side
-  addTriangleToPicture(0.6, 0.5, 0.7, 0.5, 0.65, 0.3, [0.8, 0.2, 0.8]);
-  // C4 - bottom curve
-  addTriangleToPicture(0.6, 0.2, 0.9, 0.2, 0.75, 0.3, [0.8, 0.2, 0.8]);
-  // C5 - inner cut (opens the C)
-  addTriangleToPicture(0.75, 0.6, 0.85, 0.5, 0.75, 0.4, [0.8, 0.2, 0.8]);
+  addTriangleToPicture(0.2, 0.4, 0.5, 0.4, 0.35, 0.5, [0.8, 0.2, 0.8]); // top curve
+  addTriangleToPicture(0.2, 0.4, 0.3, 0.4, 0.25, 0.2, [0.8, 0.2, 0.8]); // left side (upper)
+  addTriangleToPicture(0.2, 0.2, 0.3, 0.2, 0.25, 0.0, [0.8, 0.2, 0.8]); // left side (lower)
+  addTriangleToPicture(0.2, 0.0, 0.5, 0.0, 0.35, 0.1, [0.8, 0.2, 0.8]); // bottom curve
+  addTriangleToPicture(0.35, 0.3, 0.45, 0.2, 0.35, 0.1, [0.8, 0.2, 0.8]); // inner cut (opens the C)
   
-  // Decorative triangles (10 triangles) - Blue color to reach 20+ total
-  // Top decorative triangles
-  addTriangleToPicture(-0.2, 0.9, -0.15, 0.85, -0.1, 0.9, [0.3, 0.5, 0.9]);
-  addTriangleToPicture(0.4, 0.95, 0.45, 0.9, 0.5, 0.95, [0.3, 0.5, 0.9]);
-  addTriangleToPicture(0.95, 0.85, 0.98, 0.8, 1.0, 0.85, [0.3, 0.5, 0.9]);
+  // LEFT TREE (3 triangles stacked)
+  addTriangleToPicture(-0.85, 0.1, -0.75, 0.1, -0.8, 0.2, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(-0.85, 0.0, -0.75, 0.0, -0.8, 0.1, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(-0.82, -0.1, -0.78, -0.1, -0.8, 0.0, [0.3, 0.5, 0.9]); // trunk
   
-  // Middle decorative triangles
-  addTriangleToPicture(-0.25, 0.5, -0.2, 0.45, -0.15, 0.5, [0.3, 0.5, 0.9]);
-  addTriangleToPicture(0.35, 0.55, 0.4, 0.5, 0.45, 0.55, [0.3, 0.5, 0.9]);
-  addTriangleToPicture(0.95, 0.5, 0.98, 0.45, 1.0, 0.5, [0.3, 0.5, 0.9]);
+  // RIGHT TREE (3 triangles stacked)
+  addTriangleToPicture(0.85, 0.2, 0.95, 0.2, 0.9, 0.3, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(0.85, 0.1, 0.95, 0.1, 0.9, 0.2, [0.3, 0.5, 0.9]);
+  addTriangleToPicture(0.88, 0.0, 0.92, 0.0, 0.9, 0.1, [0.3, 0.5, 0.9]); // trunk
   
-  // Bottom decorative triangles
-  addTriangleToPicture(-0.2, 0.15, -0.15, 0.1, -0.1, 0.15, [0.3, 0.5, 0.9]);
-  addTriangleToPicture(0.4, 0.1, 0.45, 0.05, 0.5, 0.1, [0.3, 0.5, 0.9]);
-  addTriangleToPicture(0.95, 0.2, 0.98, 0.15, 1.0, 0.2, [0.3, 0.5, 0.9]);
-  addTriangleToPicture(-0.3, 0.3, -0.25, 0.25, -0.2, 0.3, [0.3, 0.5, 0.9]);
+  // BOTTOM LEFT DIAMOND (4 triangles)
+  addTriangleToPicture(-0.5, -0.45, -0.35, -0.45, -0.425, -0.35, [0.3, 0.5, 0.9]); // top
+  addTriangleToPicture(-0.35, -0.45, -0.425, -0.55, -0.425, -0.45, [0.3, 0.5, 0.9]); // right
+  addTriangleToPicture(-0.5, -0.45, -0.425, -0.55, -0.425, -0.45, [0.3, 0.5, 0.9]); // left
+  addTriangleToPicture(-0.425, -0.55, -0.35, -0.45, -0.5, -0.45, [0.3, 0.5, 0.9]); // bottom
+  
+  // BOTTOM RIGHT DIAMOND (4 triangles)
+  addTriangleToPicture(0.5, -0.45, 0.65, -0.45, 0.575, -0.35, [0.3, 0.5, 0.9]); // top
+  addTriangleToPicture(0.65, -0.45, 0.575, -0.55, 0.575, -0.45, [0.3, 0.5, 0.9]); // right
+  addTriangleToPicture(0.5, -0.45, 0.575, -0.55, 0.575, -0.45, [0.3, 0.5, 0.9]); // left
+  addTriangleToPicture(0.575, -0.55, 0.65, -0.45, 0.5, -0.45, [0.3, 0.5, 0.9]); // bottom
+  
+  // Total: 10 (letters) + 16 (diamonds) + 6 (trees) = 32 triangles
   
   // Render all shapes
   renderAllShapes();
