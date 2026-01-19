@@ -222,12 +222,30 @@ function drawPicture() {
   addTriangleToPicture(0.5, 0.75, 0.575, 0.65, 0.575, 0.75, [0.3, 0.5, 0.9]); // left
   addTriangleToPicture(0.575, 0.65, 0.65, 0.75, 0.5, 0.75, [0.3, 0.5, 0.9]); // bottom
   
-  // Letter E (5 triangles) - Pink/Purple color
-  addTriangleToPicture(-0.4, 0.4, -0.1, 0.4, -0.25, 0.5, [0.8, 0.2, 0.8]); // top bar
-  addTriangleToPicture(-0.4, 0.2, -0.15, 0.2, -0.275, 0.3, [0.8, 0.2, 0.8]); // middle bar
-  addTriangleToPicture(-0.4, 0.0, -0.1, 0.0, -0.25, 0.1, [0.8, 0.2, 0.8]); // bottom bar
-  addTriangleToPicture(-0.4, 0.4, -0.3, 0.4, -0.35, 0.2, [0.8, 0.2, 0.8]); // vertical spine (upper)
-  addTriangleToPicture(-0.4, 0.2, -0.3, 0.2, -0.35, 0.0, [0.8, 0.2, 0.8]); // vertical spine (lower)
+  // Letter E (11 triangles from your coordinates) - Pink/Purple color
+  // Converting grid coordinates to WebGL: (grid_x/14)*2-1, (grid_y/14)*2-1
+  // Triangle 1: (1,2) (3,4) (3,2)
+  addTriangleToPicture(-0.857, -0.714, -0.571, -0.429, -0.571, -0.714, [0.8, 0.2, 0.8]);
+  // Triangle 2: (3,3) (3,2) (6,2)
+  addTriangleToPicture(-0.571, -0.571, -0.571, -0.714, -0.143, -0.714, [0.8, 0.2, 0.8]);
+  // Triangle 3: (3,3) (6,2) (8,3)
+  addTriangleToPicture(-0.571, -0.571, -0.143, -0.714, 0.143, -0.571, [0.8, 0.2, 0.8]);
+  // Triangle 4: (1,2) (1,6) (3,4)
+  addTriangleToPicture(-0.857, -0.714, -0.857, 0.0, -0.571, -0.429, [0.8, 0.2, 0.8]);
+  // Triangle 5: (3,4) (1,6) (3,8)
+  addTriangleToPicture(-0.571, -0.429, -0.857, 0.0, -0.571, 0.143, [0.8, 0.2, 0.8]);
+  // Triangle 6: (1,6) (1,10) (3,8)
+  addTriangleToPicture(-0.857, 0.0, -0.857, 0.429, -0.571, 0.143, [0.8, 0.2, 0.8]);
+  // Triangle 7: (3,8) (1,10) (3,11)
+  addTriangleToPicture(-0.571, 0.143, -0.857, 0.429, -0.571, 0.571, [0.8, 0.2, 0.8]);
+  // Triangle 8: (3,11) (1,10) (1,12)
+  addTriangleToPicture(-0.571, 0.571, -0.857, 0.429, -0.857, 0.714, [0.8, 0.2, 0.8]);
+  // Triangle 9: (3,11) (1,12) (5,12)
+  addTriangleToPicture(-0.571, 0.571, -0.857, 0.714, -0.286, 0.714, [0.8, 0.2, 0.8]);
+  // Triangle 10: (5,12) (3,11) (7,11)
+  addTriangleToPicture(-0.286, 0.714, -0.571, 0.571, 0.0, 0.571, [0.8, 0.2, 0.8]);
+  // Triangle 11: (7,11) (5,12) (9,12)
+  addTriangleToPicture(0.0, 0.571, -0.286, 0.714, 0.286, 0.714, [0.8, 0.2, 0.8]);
   
   // Letter C (5 triangles) - Pink/Purple color
   addTriangleToPicture(0.2, 0.4, 0.5, 0.4, 0.35, 0.5, [0.8, 0.2, 0.8]); // top curve
