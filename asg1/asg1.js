@@ -223,9 +223,10 @@ function drawPicture() {
   addTriangleToPicture(0.575, 0.65, 0.65, 0.75, 0.5, 0.75, [0.3, 0.5, 0.9]); // bottom
   
   // Helper function to convert grid to WebGL coordinates
-  // Scale: x from [0,22] to [-1,1], y from [0,14] to [-1,1]
-  let toX = (x) => (x/22)*2-1;
-  let toY = (y) => (y/14)*2-1;
+  // Scale down to 50% and center the letters
+  let scale = 0.5;
+  let toX = (x) => ((x/22)*2-1) * scale;
+  let toY = (y) => ((y/14)*2-1) * scale;
   
   // Letter E (14 triangles) - Pink/Purple color
   addTriangleToPicture(toX(1), toY(2), toX(3), toY(4), toX(3), toY(2), [0.8, 0.2, 0.8]);
