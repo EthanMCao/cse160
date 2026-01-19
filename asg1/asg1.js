@@ -222,37 +222,42 @@ function drawPicture() {
   addTriangleToPicture(0.5, 0.75, 0.575, 0.65, 0.575, 0.75, [0.3, 0.5, 0.9]); // left
   addTriangleToPicture(0.575, 0.65, 0.65, 0.75, 0.5, 0.75, [0.3, 0.5, 0.9]); // bottom
   
-  // Letter E (11 triangles from your coordinates) - Pink/Purple color
-  // Converting grid coordinates to WebGL: (grid_x/14)*2-1, (grid_y/14)*2-1
-  // Triangle 1: (1,2) (3,4) (3,2)
-  addTriangleToPicture(-0.857, -0.714, -0.571, -0.429, -0.571, -0.714, [0.8, 0.2, 0.8]);
-  // Triangle 2: (3,3) (3,2) (6,2)
-  addTriangleToPicture(-0.571, -0.571, -0.571, -0.714, -0.143, -0.714, [0.8, 0.2, 0.8]);
-  // Triangle 3: (3,3) (6,2) (8,3)
-  addTriangleToPicture(-0.571, -0.571, -0.143, -0.714, 0.143, -0.571, [0.8, 0.2, 0.8]);
-  // Triangle 4: (1,2) (1,6) (3,4)
-  addTriangleToPicture(-0.857, -0.714, -0.857, 0.0, -0.571, -0.429, [0.8, 0.2, 0.8]);
-  // Triangle 5: (3,4) (1,6) (3,8)
-  addTriangleToPicture(-0.571, -0.429, -0.857, 0.0, -0.571, 0.143, [0.8, 0.2, 0.8]);
-  // Triangle 6: (1,6) (1,10) (3,8)
-  addTriangleToPicture(-0.857, 0.0, -0.857, 0.429, -0.571, 0.143, [0.8, 0.2, 0.8]);
-  // Triangle 7: (3,8) (1,10) (3,11)
-  addTriangleToPicture(-0.571, 0.143, -0.857, 0.429, -0.571, 0.571, [0.8, 0.2, 0.8]);
-  // Triangle 8: (3,11) (1,10) (1,12)
-  addTriangleToPicture(-0.571, 0.571, -0.857, 0.429, -0.857, 0.714, [0.8, 0.2, 0.8]);
-  // Triangle 9: (3,11) (1,12) (5,12)
-  addTriangleToPicture(-0.571, 0.571, -0.857, 0.714, -0.286, 0.714, [0.8, 0.2, 0.8]);
-  // Triangle 10: (5,12) (3,11) (7,11)
-  addTriangleToPicture(-0.286, 0.714, -0.571, 0.571, 0.0, 0.571, [0.8, 0.2, 0.8]);
-  // Triangle 11: (7,11) (5,12) (9,12)
-  addTriangleToPicture(0.0, 0.571, -0.286, 0.714, 0.286, 0.714, [0.8, 0.2, 0.8]);
+  // Helper function to convert grid to WebGL coordinates
+  // Scale: x from [0,22] to [-1,1], y from [0,14] to [-1,1]
+  let toX = (x) => (x/22)*2-1;
+  let toY = (y) => (y/14)*2-1;
   
-  // Letter C (5 triangles) - Pink/Purple color
-  addTriangleToPicture(0.2, 0.4, 0.5, 0.4, 0.35, 0.5, [0.8, 0.2, 0.8]); // top curve
-  addTriangleToPicture(0.2, 0.4, 0.3, 0.4, 0.25, 0.2, [0.8, 0.2, 0.8]); // left side (upper)
-  addTriangleToPicture(0.2, 0.2, 0.3, 0.2, 0.25, 0.0, [0.8, 0.2, 0.8]); // left side (lower)
-  addTriangleToPicture(0.2, 0.0, 0.5, 0.0, 0.35, 0.1, [0.8, 0.2, 0.8]); // bottom curve
-  addTriangleToPicture(0.35, 0.3, 0.45, 0.2, 0.35, 0.1, [0.8, 0.2, 0.8]); // inner cut (opens the C)
+  // Letter E (14 triangles) - Pink/Purple color
+  addTriangleToPicture(toX(1), toY(2), toX(3), toY(4), toX(3), toY(2), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(3), toX(3), toY(2), toX(6), toY(2), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(3), toX(6), toY(2), toX(8), toY(3), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(1), toY(2), toX(1), toY(6), toX(3), toY(4), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(4), toX(1), toY(6), toX(3), toY(8), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(1), toY(6), toX(1), toY(10), toX(3), toY(8), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(8), toX(1), toY(10), toX(3), toY(11), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(11), toX(1), toY(10), toX(1), toY(12), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(11), toX(1), toY(12), toX(5), toY(12), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(5), toY(12), toX(3), toY(11), toX(7), toY(11), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(7), toY(11), toX(5), toY(12), toX(9), toY(12), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(6), toX(3), toY(8), toX(5), toY(6), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(3), toY(8), toX(5), toY(6), toX(7), toY(8), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(5), toY(6), toX(7), toY(8), toX(7), toY(6), [0.8, 0.2, 0.8]);
+  
+  // Letter C (14 triangles) - Pink/Purple color
+  addTriangleToPicture(toX(11), toY(9), toX(13), toY(9), toX(13), toY(12), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(13), toY(12), toX(13), toY(11), toX(15), toY(11), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(15), toY(11), toX(13), toY(12), toX(17), toY(12), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(17), toY(12), toX(15), toY(11), toX(18), toY(11), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(11), toY(9), toX(13), toY(9), toX(12), toY(8), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(12), toY(8), toX(11), toY(9), toX(11), toY(6), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(12), toY(8), toX(13), toY(9), toX(13), toY(6), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(12), toY(8), toX(11), toY(6), toX(13), toY(6), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(13), toY(9), toX(13), toY(6), toX(15), toY(8), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(15), toY(8), toX(15), toY(6), toX(13), toY(6), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(11), toY(6), toX(13), toY(6), toX(13), toY(2), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(13), toY(2), toX(13), toY(4), toX(15), toY(4), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(15), toY(4), toX(13), toY(2), toX(17), toY(2), [0.8, 0.2, 0.8]);
+  addTriangleToPicture(toX(15), toY(3), toX(17), toY(2), toX(20), toY(2), [0.8, 0.2, 0.8]);
   
   // LEFT TREE (3 triangles stacked)
   addTriangleToPicture(-0.85, 0.1, -0.75, 0.1, -0.8, 0.2, [0.3, 0.5, 0.9]);
