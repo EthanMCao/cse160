@@ -270,6 +270,13 @@ function clearCanvas() {
 }
 
 function drawPicture() {
+  // ===================================================================
+  // IMPORTANT: Personalize this section with YOUR OWN INITIALS!
+  // This example uses "ET" - change the coordinates and design to match
+  // your own initials and creative vision.
+  // You need at least 20 triangles for full credit.
+  // ===================================================================
+  
   // Custom picture: Letter "E" and "T" with decorative triangles
   // This creates a stylized design featuring the initials "ET"
   
