@@ -18,6 +18,9 @@ class Circle {
     // Pass the color to the fragment shader
     gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
     
+    // Set point size to 1.0 to prevent point artifacts on vertices
+    gl.uniform1f(u_Size, 1.0);
+    
     // Create circle using triangle fan
     // Center vertex + perimeter vertices + closing vertex
     let vertices = [];
