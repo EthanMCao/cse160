@@ -29,19 +29,9 @@ A WebGL-based paint program that allows users to draw shapes interactively on an
 
 ### Awesome Features (Extra Credit)
 1. **Smooth Stroke Interpolation** ✨
-   - Fills gaps during mouse drag by interpolating points between cursor positions
-   - Creates smoother, more natural-looking strokes
-   - Can be toggled on/off with a checkbox
-   
-2. **Alpha Transparency** 🎨
-   - Slider to control transparency (0-100%)
-   - Enables painting with semi-transparent colors for layering effects
-   - Uses WebGL blending (GL_BLEND with SRC_ALPHA)
-   
-3. **Eraser Tool** 🧽
-   - Dedicated eraser mode button
-   - Actually removes shapes from the canvas within the eraser radius
-   - Size slider controls eraser radius
+   - Automatically fills gaps during mouse drag by interpolating points between cursor positions
+   - Creates smoother, more natural-looking strokes without disconnected shapes
+   - Works seamlessly in the background for all drawing modes
 
 ## How to Run
 
@@ -103,12 +93,8 @@ Ethan - CSE 160 Assignment 1
 
 ## Notes for Grader
 
-**Awesome Features Implemented:**
-1. **Smooth Stroke Interpolation** - Toggle the "Smooth Stroke" checkbox to see the difference. When enabled, the program interpolates additional points between mouse positions, creating smooth lines instead of disconnected shapes during fast mouse movement.
+**Awesome Feature Implemented:**
+**Smooth Stroke Interpolation** - The program automatically interpolates additional points between mouse positions during drag operations, creating smooth continuous lines instead of disconnected shapes during fast mouse movement. This makes the paint program feel much more natural and polished.
 
-2. **Alpha Transparency** - Use the "Transparency" slider to paint with semi-transparent colors. This creates beautiful layering effects and makes the paint program feel more realistic.
-
-3. **Eraser Tool** - Click the "Eraser" button to switch to eraser mode. This actually removes shapes from the canvas within the eraser radius, allowing you to correct mistakes.
-
-The custom picture features the initials "EB" created with colored triangles, along with decorative triangle elements around the letters. (Note: Update these to your own initials before submission)
+The custom picture features the initials "EB" created with 30+ colored triangles (pink/purple for letters, blue for decoration). (Note: Update these to your own initials before submission)
 
