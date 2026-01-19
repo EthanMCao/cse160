@@ -6,16 +6,19 @@
   </head>
 
   <body onload="main()">
-    <canvas id="webgl" width="500" height="500">
-      Please use a browser that supports "canvas"
-    </canvas>
-    <br>
-    <button onclick="clearCanvas()">Clear Canvas</button>
-    <button onclick="drawPicture()">Draw My Picture</button>
-    <br><br>
-
-    <h3>Reference Drawing:</h3>
-    <img src="img.jpg" alt="Hand-drawn triangle picture" style="max-width: 500px; border: 2px solid #333;">
+    <div style="display: inline-block; vertical-align: top;">
+      <canvas id="webgl" width="500" height="500">
+        Please use a browser that supports "canvas"
+      </canvas>
+      <br>
+      <button onclick="clearCanvas()">Clear Canvas</button>
+      <button onclick="drawPicture()">Draw My Picture</button>
+    </div>
+    
+    <div style="display: inline-block; vertical-align: top; margin-left: 20px;">
+      <h3>Reference Drawing:</h3>
+      <img src="img.jpg" alt="Hand-drawn triangle picture" style="max-width: 500px; border: 2px solid #333;">
+    </div>
     <br><br>
 
     <b>Drawing Mode:</b>
