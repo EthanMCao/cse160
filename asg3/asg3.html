@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Assignment 3: First-Person World Explorer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f0f0f0;
+      }
+      canvas {
+        border: 2px solid #333;
+        cursor: crosshair;
+        display: block;
+        margin-bottom: 20px;
+      }
+      .info {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      .game-status {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff6600;
+        margin: 10px 0;
+      }
+      .controls {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        line-height: 1.6;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      h1 {
+        color: #333;
+      }
+      h3 {
+        margin-top: 0;
+        color: #555;
+      }
+      ul {
+        margin: 10px 0;
+      }
+      li {
+        margin: 5px 0;
+      }
+      .highlight {
+        background-color: #ffffcc;
+        padding: 2px 5px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1>Assignment 3: First-Person World Explorer</h1>
+    
+    <canvas id="webgl" width="800" height="600" tabindex="0">
+      Please use a browser that supports "canvas"
+    </canvas>
+    
+    <div class="info">
+      <div>Position: <span id="position">--</span></div>
+      <div class="game-status" id="gameStatus">Find all the Lucky Blocks!</div>
+      <div>Lucky Blocks Collected: <span id="luckyBlocks">0/0</span></div>
+      <div>Selected Block: <span id="selectedBlock" class="highlight">Dirt</span></div>
+    </div>
+    
+    <div class="controls">
+      <h3>🎮 Controls:</h3>
+      <ul>
+        <li><strong>Click canvas</strong> to enable mouse look</li>
+        <li><strong>W/A/S/D</strong> - Move forward/left/backward/right</li>
+        <li><strong>Q/E</strong> - Turn left/right (keyboard rotation)</li>
+        <li><strong>Mouse</strong> - Look around (after clicking canvas)</li>
+        <li><strong>Left Click</strong> - Place block</li>
+        <li><strong>Right Click</strong> - Remove/collect block</li>
+        <li><strong>Keys 1-7</strong> - Select block type (1=Dirt, 2=Lucky, 3=Wood, 4=Grass, 5=Pumpkin, 6=Slime, 7=Brick)</li>
+      </ul>
+      
+      <h3>🎯 Goal:</h3>
+      <p>
+        Find and collect all the <strong class="highlight">Lucky Blocks</strong> (yellow blocks with "?") 
+        scattered throughout the world! Right-click on them to collect.
+      </p>
+      
+      <h3>💡 Tips:</h3>
+      <ul>
+        <li>Walk around the 32×32 world to explore</li>
+        <li>Lucky blocks are randomly placed at ground level</li>
+        <li>Build structures with different block types</li>
+        <li>Press ESC to release mouse control</li>
+      </ul>
+    </div>
+    
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="lib/cuon-matrix.js"></script>
+    <script src="Chunk.js"></script>
+    <script src="Camera.js"></script>
+    <script src="asg3.js"></script>
+  </body>
+</html>
