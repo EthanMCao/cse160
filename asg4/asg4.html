@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Assignment 4: Lighting</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f0f0f0;
+      }
+      canvas {
+        border: 2px solid #333;
+        cursor: crosshair;
+        display: block;
+        margin-bottom: 15px;
+      }
+      .panel {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      .game-status {
+        font-size: 16px;
+        font-weight: bold;
+        color: #ff6600;
+        margin: 5px 0;
+      }
+      h1 { color: #333; }
+      h3 { margin-top: 0; color: #555; }
+      button {
+        padding: 5px 12px;
+        margin: 2px;
+        cursor: pointer;
+        border: 1px solid #999;
+        border-radius: 3px;
+        background: #eee;
+      }
+      button:hover { background: #ddd; }
+      .slider-row {
+        margin: 5px 0;
+      }
+      .slider-row label {
+        display: inline-block;
+        width: 100px;
+      }
+      .highlight {
+        background-color: #ffffcc;
+        padding: 2px 5px;
+        border-radius: 3px;
+      }
+      ul { margin: 5px 0; }
+      li { margin: 3px 0; }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1>Assignment 4: Lighting</h1>
+
+    <canvas id="webgl" width="800" height="600" tabindex="0">
+      Please use a browser that supports "canvas"
+    </canvas>
+
+    <div class="panel">
+      <div>Position: <span id="position">--</span></div>
+      <div class="game-status" id="gameStatus">Find all the Lucky Blocks!</div>
+      <div>Lucky Blocks: <span id="luckyBlocks">0/0</span></div>
+      <div>Selected Block: <span id="selectedBlock" class="highlight">Grass</span></div>
+    </div>
+
+    <div class="panel">
+      <h3>Lighting Controls</h3>
+
+      <div>
+        <strong>Lighting:</strong>
+        <button id="btnLightingOn">ON</button>
+        <button id="btnLightingOff">OFF</button>
+        &nbsp;&nbsp;
+        <strong>Normals:</strong>
+        <button id="btnNormalOn">ON</button>
+        <button id="btnNormalOff">OFF</button>
+      </div>
+      <br>
+
+      <div>
+        <strong>Point Light:</strong>
+        <button id="btnPointOn">ON</button>
+        <button id="btnPointOff">OFF</button>
+        &nbsp;&nbsp;
+        <strong>Spotlight:</strong>
+        <button id="btnSpotOn">ON</button>
+        <button id="btnSpotOff">OFF</button>
+        &nbsp;&nbsp;
+        <strong>Light Animation:</strong>
+        <button id="btnAnimOn">ON</button>
+        <button id="btnAnimOff">OFF</button>
+      </div>
+      <br>
+
+      <div class="slider-row">
+        <label>Light Angle:</label>
+        <input type="range" id="lightX" min="0" max="360" value="0">
+        <span id="lightXVal">0</span>
+      </div>
+      <div class="slider-row">
+        <label>Light Y:</label>
+        <input type="range" id="lightY" min="1" max="15" value="5" step="0.5">
+        <span id="lightYVal">5</span>
+      </div>
+      <div class="slider-row">
+        <label>Light R:</label>
+        <input type="range" id="lightR" min="0" max="255" value="255">
+        <span id="lightRVal">255</span>
+      </div>
+      <div class="slider-row">
+        <label>Light G:</label>
+        <input type="range" id="lightG" min="0" max="255" value="255">
+        <span id="lightGVal">255</span>
+      </div>
+      <div class="slider-row">
+        <label>Light B:</label>
+        <input type="range" id="lightB" min="0" max="255" value="255">
+        <span id="lightBVal">255</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Controls</h3>
+      <ul>
+        <li><strong>Click canvas</strong> to enable mouse look</li>
+        <li><strong>W/A/S/D</strong> - Move</li>
+        <li><strong>Q/E</strong> - Turn</li>
+        <li><strong>Mouse</strong> - Look around</li>
+        <li><strong>Left Click</strong> - Place block</li>
+        <li><strong>Right Click</strong> - Remove block</li>
+        <li><strong>Keys 1-6</strong> - Select block type</li>
+        <li><strong>ESC</strong> - Release mouse</li>
+      </ul>
+    </div>
+
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="lib/cuon-matrix.js"></script>
+    <script src="Chunk.js"></script>
+    <script src="Camera.js"></script>
+    <script src="asg4.js"></script>
+  </body>
+</html>
