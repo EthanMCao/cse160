@@ -2,73 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Assignment 5: Enchanted Forest Grove</title>
+  <title>Assignment 5</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; }
     body { background: #000; overflow: hidden; font-family: Arial, sans-serif; }
     canvas { display: block; }
 
     #info {
       position: absolute;
-      top: 12px;
-      left: 12px;
-      color: #eee;
-      background: rgba(0, 0, 0, 0.55);
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.75;
-      pointer-events: none;
-    }
-    #info strong { font-size: 15px; color: #aef; }
-
-    #wow-note {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      color: #cdf;
-      background: rgba(0, 0, 0, 0.55);
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      max-width: 300px;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-size: 14px;
       line-height: 1.6;
       pointer-events: none;
     }
-    #wow-note strong { color: #ffd;  }
+
+    #wow-note {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: white;
+      font-size: 13px;
+      max-width: 280px;
+      pointer-events: none;
+    }
 
     #loading {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #fff;
-      font-size: 20px;
-      background: rgba(0,0,0,0.7);
-      padding: 20px 40px;
-      border-radius: 10px;
+      color: white;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
-  <div id="loading">Loading scene…</div>
+  <div id="loading">Loading...</div>
 
   <div id="info">
-    <strong>Enchanted Forest Grove</strong><br>
-    Left-drag — Orbit camera<br>
-    Right-drag — Pan<br>
-    Scroll — Zoom<br>
-    Middle-drag — Pan
+    Assignment 5 - Three.js Scene<br>
+    Left-drag: orbit | Scroll: zoom | Right-drag: pan
   </div>
 
   <div id="wow-note">
-    <strong>Wow Feature:</strong> Dynamic day/night cycle — the sun arcs across
-    the sky, light colours shift between warm daylight and cool moonlight, and
-    six magical orbs orbit the grove pulsing with colour. Water texture scrolls
-    for a live ripple effect.
+    Wow: Day/night cycle - sun moves across the sky, lights shift from warm to cool, orbs glow brighter at night
   </div>
 
-  <!-- Three.js r169 via CDN importmap -->
   <script type="importmap">
   {
     "imports": {
